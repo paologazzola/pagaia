@@ -174,3 +174,12 @@
 .sep {
   opacity: 0.4;
 }
+
+.footer-comic-link {
+  color: rgba(200, 214, 240, 0.2);
+  text-decoration: none;
+}
+
+.footer-comic-link:hover {
+  color: rgba(64, 190, 220, 0.6);
+}
