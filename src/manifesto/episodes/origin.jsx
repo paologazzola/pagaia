@@ -20,7 +20,7 @@ export const origin = {
   title: 'The Paddle That Changed Everything',
   panels: [
     {
-      art: Panel1Art, width: 560, height: 310, wide: true,
+      art: Panel1Art, width: 560, height: 300, wide: true,
       scene: 'Night at a cluttered desk. Three monitors show an ERROR 500 page, a failing build log and a 404 page. A tired developer in glasses sits beside a cold coffee and a tipped-over cup.',
       captions: [{ text: 'Codestan. Sector 7G. 3:47 AM. The web is broken.', box: [10, 10, 540, 28], size: 12.5, background: '#f5e642', color: '#000' }],
       dialogue: [{ speaker: DEV, kind: 'speech', tail: 'down-left', place: { top: '15%', right: '4%', width: '30%' },
@@ -41,7 +41,7 @@ export const origin = {
         lines: ["They said it couldn't be done...", 'but I shall build...', <strong>PAGAIA!</strong>] }],
     },
     {
-      art: Panel4Art, width: 560, height: 260, wide: true,
+      art: Panel4Art, width: 560, height: 300, wide: true,
       scene: 'The hero types at a desk with three monitors: code defining pagaia.xyz, a core engine that turns chaos into order with a successful build, and a loading bar at 78%. A pizza box waits on the desk. Sound effects: CLACK! TAK TAK!',
       captions: [{ text: 'The mission begins. Days blur into nights.', box: [8, 8, 544, 24], size: 13, background: '#f5e642', color: '#000' }],
       dialogue: [],
@@ -68,7 +68,7 @@ export const origin = {
         lines: ['For the people...', 'for the world...', <strong>I DEPLOY!!</strong>] }],
     },
     {
-      art: Panel8Art, width: 560, height: 280, wide: true,
+      art: Panel8Art, width: 560, height: 300, wide: true,
       scene: 'A globe with the paddle logo at its center, linked to points across every continent, while cheering people surround it. Sound effects: WOW! AMAZING!',
       captions: [{ text: 'And across the globe... pagaia.xyz is live!', box: [8, 8, 544, 26], size: 13, background: '#4a9eff', color: '#000' }],
       dialogue: [],
@@ -83,7 +83,7 @@ export const origin = {
       dialogue: [],
     },
     {
-      art: Panel10Art, width: 560, height: 280, wide: true,
+      art: Panel10Art, width: 560, height: 300, wide: true,
       scene: 'A window onto a starry sky and a crescent moon. The developer stands looking out, a cat sitting beside him on the sill.',
       captions: [{ text: "Dawn. The cat purrs. The stars don't care about uptime.", box: [8, 8, 544, 24], size: 12, background: '#000', color: '#f5e642' }],
       dialogue: [{ speaker: DEV, kind: 'thought', place: { top: '12%', left: '74.5%', width: '24%' },

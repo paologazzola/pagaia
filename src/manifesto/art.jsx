@@ -175,7 +175,7 @@ function SpeedLines({ cx, cy, n = 20, r1 = 20, r2 = 300, color = '#000', opacity
 
 export function Panel1Art() {
   return (
-    <svg viewBox="0 0 560 310" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       {/* Dark room */}
       <rect width="560" height="310" fill="#12192e" />
@@ -230,7 +230,7 @@ export function Panel1Art() {
 
 export function Panel2Art() {
   return (
-    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       {/* Flash background */}
       <rect width="260" height="280" fill="#fff" />
@@ -265,7 +265,7 @@ export function Panel2Art() {
 
 export function Panel3Art() {
   return (
-    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       <rect width="260" height="280" fill="#e8f0ff" />
       <rect width="260" height="280" fill="url(#bd-blue)" />
@@ -289,13 +289,13 @@ export function Panel3Art() {
 
 export function Panel4Art() {
   return (
-    <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
-      <rect width="560" height="260" fill="#0a1020" />
-      <rect width="560" height="260" fill="url(#bd-blue)" />
+      <rect width="560" height="300" fill="#0a1020" />
+      <rect width="560" height="300" fill="url(#bd-blue)" />
 
       {/* Desk */}
-      <rect x="0" y="200" width="560" height="60" fill="#3d2112" stroke="#000" strokeWidth="3" />
+      <rect x="0" y="200" width="560" height="100" fill="#3d2112" stroke="#000" strokeWidth="3" />
       <rect x="0" y="196" width="560" height="10" fill="#5c3d2e" stroke="#000" strokeWidth="2" />
 
       {/* ── Hero: LEFT side, flipped (looks RIGHT toward monitors) ── */}
@@ -348,7 +348,7 @@ export function Panel4Art() {
 
 export function Panel5Art() {
   return (
-    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       <rect width="260" height="280" fill="#2a0a0a" />
       <rect width="260" height="280" fill="url(#bd-red)" />
@@ -412,7 +412,7 @@ export function Panel5Art() {
 
 export function Panel6Art() {
   return (
-    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       <rect width="560" height="300" fill="#0a1a0a" />
       <rect width="560" height="300" fill="url(#bd-yellow)" />
@@ -453,7 +453,7 @@ export function Panel6Art() {
 
 export function Panel7Art() {
   return (
-    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       <rect width="260" height="280" fill="#1a0a2e" />
       <rect width="260" height="280" fill="url(#bd-blue)" />
@@ -504,10 +504,10 @@ export function Panel7Art() {
 
 export function Panel8Art() {
   return (
-    <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
-      <rect width="560" height="280" fill="#0a1a2e" />
-      <rect width="560" height="280" fill="url(#bd-blue)" />
+      <rect width="560" height="300" fill="#0a1a2e" />
+      <rect width="560" height="300" fill="url(#bd-blue)" />
 
       {/* Globe */}
       <circle cx="280" cy="150" r="105" fill="#1a5fb4" stroke="#000" strokeWidth="4" opacity="0.9" />
@@ -624,7 +624,7 @@ export function Stars({ n = 40, seed = 1 }) {
 /* ── Panel 9 – It was all a dream (cat on keyboard) ── */
 export function Panel9Art() {
   return (
-    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 260 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       {/* Dark room */}
       <rect width="260" height="280" fill="#12192e" />
@@ -680,7 +680,7 @@ export function Panel9Art() {
 /* ── Panel 10 – Stars and cat, the real world ── */
 export function Panel10Art() {
   return (
-    <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <SvgDefs />
       {/* Night sky – dark blue gradient */}
       <defs>
@@ -693,7 +693,7 @@ export function Panel10Art() {
           <stop offset="100%" stopColor="#0a0805" />
         </linearGradient>
       </defs>
-      <rect width="560" height="280" fill="url(#sky)" />
+      <rect width="560" height="300" fill="url(#sky)" />
 
       {/* Stars */}
       <Stars n={55} seed={42} />
@@ -706,6 +706,7 @@ export function Panel10Art() {
       {/* Window frame */}
       <rect x="30" y="20" width="260" height="240" rx="4" fill="none" stroke="#5c3d2e" strokeWidth="10" />
       {/* Windowsill */}
+      <rect x="0" y="266" width="295" height="34" fill="#12192e" />
       <rect x="20" y="255" width="280" height="16" rx="3" fill="#5c3d2e" stroke="#000" strokeWidth="2.5" />
       {/* Window cross bars */}
       <line x1="30" y1="135" x2="290" y2="135" stroke="#5c3d2e" strokeWidth="8" />
@@ -715,8 +716,8 @@ export function Panel10Art() {
       <rect x="165" y="25" width="120" height="107" fill="#4a9eff" opacity="0.04" />
 
       {/* Room floor/wall inside right half */}
-      <rect x="295" y="0" width="265" height="280" fill="#12192e" />
-      <rect x="295" y="200" width="265" height="80" fill="url(#floor-g)" stroke="#000" strokeWidth="2" />
+      <rect x="295" y="0" width="265" height="300" fill="#12192e" />
+      <rect x="295" y="200" width="265" height="100" fill="url(#floor-g)" stroke="#000" strokeWidth="2" />
 
       {/* Hero silhouette at window (right side) */}
       {/* Body */}

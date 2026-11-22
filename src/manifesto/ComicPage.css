@@ -147,7 +147,7 @@
   border-left: 6px solid #000;
   border-right: 6px solid #000;
   border-bottom: 6px solid #000;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ── Panels ──
@@ -161,11 +161,16 @@
   overflow: hidden;
   margin: 0;
   container-type: inline-size;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-wide { grid-column: span 2; }
 
+/* Panels in one row stretch to a common height; the artwork fills it (slice) instead of
+   leaving a strip, cropping well under 1% at the edges. */
 .panel-art {
+  flex: 1 0 auto;
   aspect-ratio: var(--w) / var(--h);
 }
 
@@ -470,9 +475,10 @@
 }
 
 /* ── Responsive layout ── */
-/* Below three columns, a single centered column keeps the reading order linear and
-   avoids holes next to the wide panels. */
-@media (max-width: 1100px) {
+/* Three columns only where a normal panel is wide enough (over 440px) to keep its text
+   on the artwork; otherwise its text would flow below and leave holes beside the wide
+   panels. Below that, a single centered column keeps the reading order linear. */
+@media (max-width: 1359px) {
   .comic-grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -481,8 +487,11 @@
   }
   .panel {
     width: 100%;
-    max-width: 680px;
+    max-width: 560px;
     justify-self: center;
+  }
+  .panel-wide {
+    max-width: 760px;
   }
 }
 
