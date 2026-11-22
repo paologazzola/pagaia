@@ -1,0 +1,96 @@
+/* Shared chrome for every page: header navigation, skip link and helpers. */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 100;
+  padding: 8px 14px;
+  background: #f5e642;
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  border: 3px solid #000;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+.site-header {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 12px 20px;
+  background: #080b12;
+  border-bottom: 1px solid rgba(64, 190, 220, 0.25);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+.site-brand {
+  color: #40bedc;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  list-style: none;
+}
+
+.site-nav a {
+  color: #c8d6f0;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding: 6px 2px;
+}
+
+.site-nav a:hover {
+  color: #40bedc;
+}
+
+.site-nav a[aria-current='page'] {
+  color: #40bedc;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #f5e642;
+  outline-offset: 3px;
+}
+
+.site-footer {
+  padding: 18px 20px 24px;
+  background: #080b12;
+  color: #8a96ad;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.site-footer a {
+  color: #c8d6f0;
+}

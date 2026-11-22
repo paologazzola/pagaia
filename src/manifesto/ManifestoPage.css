@@ -1,0 +1,31 @@
+.chapter-index {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding: 10px 20px;
+  background: #11182a;
+  color: #c8d6f0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+.chapter-index-label {
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #8a96ad;
+}
+
+.chapter-index ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  list-style: none;
+}
+
+.chapter-index a {
+  color: #f5e642;
+  font-size: 0.95rem;
+  text-underline-offset: 4px;
+}
