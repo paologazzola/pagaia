@@ -1,53 +1,22 @@
-# pagaia-website
+# pagaia
 
-Landing page di [pagaia.xyz](https://pagaia.xyz) — React + Vite, tema "under construction".
+Public portal for [pagaia.xyz](https://pagaia.xyz), built with React and Vite. It currently contains the landing page and the Pagaia-Man origin comic, which becomes the manifesto.
 
-## Requisiti
+## Local development
 
-- Node.js >= 18
-- npm >= 9
-
-## Sviluppo locale
+Use a Node.js version supported by the locked Vite release and npm. Run:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Il dev server parte su `http://localhost:5173` con hot reload.
+Open the local URL printed by Vite (usually http://localhost:5173). Changes reload automatically.
 
-## Build per produzione
+## Production build
 
-```bash
-npm run build
-```
+Run `npm run build` to generate optimized static files in dist/. Use `npm run preview` for a local preview.
 
-Genera la cartella `dist/` con i file statici ottimizzati, pronti per il deploy.
+## Deployment
 
-Per anteprima locale del build:
-
-```bash
-npm run preview
-```
-
-## Deploy
-
-Carica il contenuto della cartella `dist/` sul tuo hosting statico preferito.
-
-Con Netlify CLI:
-
-```bash
-netlify deploy --prod --dir dist
-```
-
-Con Vercel CLI:
-
-```bash
-vercel --prod
-```
-
-Con rsync su un server nginx/Apache:
-
-```bash
-rsync -avz dist/ user@server:/var/www/pagaia.xyz/
-```
+Upload dist/ to the chosen static host when deployment has been requested. Depending on the hosting setup, use Netlify CLI (`netlify deploy --prod --dir dist`), Vercel CLI (`vercel --prod`) or rsync to a web server (`rsync -avz dist/ user@server:/var/www/pagaia.xyz/`).

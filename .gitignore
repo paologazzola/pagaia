@@ -34,11 +34,5 @@ yarn-error.log*
 # macOS
 .DS_Store
 
-# AI tools
-.claude/
-.cursor/
-.aider*
-.continue/
-
 # misc
 *.local
