@@ -15,6 +15,39 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 
 const day = iso => (iso || '').slice(0, 10)
 
+// Category keys mirror the editorial category vocabulary. The back office
+// assigns them; the site maps only the known keys to labels and ignores
+// anything else, so an unexpected value can never reach the page.
+const CATEGORIES = {
+  'remote-code-execution': 'Remote code execution',
+  'command-injection': 'Command injection',
+  'code-injection': 'Code injection',
+  'sql-injection': 'SQL injection',
+  xss: 'Cross-site scripting',
+  xxe: 'XML external entity',
+  deserialization: 'Insecure deserialization',
+  'path-traversal': 'Path traversal',
+  'file-upload': 'Unrestricted file upload',
+  'auth-bypass': 'Authentication bypass',
+  'access-control': 'Broken access control',
+  ssrf: 'Server-side request forgery',
+  csrf: 'Cross-site request forgery',
+  'memory-safety': 'Memory safety',
+  'race-condition': 'Race condition',
+  dos: 'Denial of service',
+  'info-disclosure': 'Information disclosure',
+  crypto: 'Cryptographic weakness',
+  'hardcoded-credentials': 'Hard-coded credentials',
+  other: 'Other',
+}
+const CAT_ORDER = Object.keys(CATEGORIES)
+
+// catKeys returns an article's known category keys, in display order.
+function catKeys(a) {
+  const set = new Set(Array.isArray(a.categories) ? a.categories : [])
+  return CAT_ORDER.filter(k => set.has(k))
+}
+
 function status(a) {
   const fix = { patched: ['fixed', 'Fix available'], unpatched: ['open', 'No official fix yet'], withdrawn: ['withdrawn', 'Record withdrawn'] }[a.patch_status] || ['open', 'Status unknown']
   return fix
@@ -79,8 +112,28 @@ function badges(a) {
   return out
 }
 
+// filterBar renders category filters for the categories present across the
+// published articles, with a count each. The links degrade to hash anchors
+// without JavaScript; main.js turns them into a live filter.
+function filterBar(articles) {
+  const counts = new Map()
+  for (const a of articles) for (const k of catKeys(a)) counts.set(k, (counts.get(k) || 0) + 1)
+  const present = CAT_ORDER.filter(k => counts.has(k))
+  if (!present.length) return ''
+  const chip = (href, key, label, n) =>
+    `<li><a class="sec-filter" href="${href}" data-cat="${esc(key)}">${esc(label)} <span class="sec-filter-n">${n}</span></a></li>`
+  const items = [chip('/security/', '', 'All', articles.length)]
+    .concat(present.map(k => chip(`/security/#${k}`, k, CATEGORIES[k], counts.get(k))))
+    .join('\n          ')
+  return `      <nav class="sec-filters" aria-label="Filter by category">
+        <ul>
+          ${items}
+        </ul>
+      </nav>`
+}
+
 function indexPage(articles) {
-  const items = articles.map(a => `        <li>
+  const items = articles.map(a => `        <li data-cat="${esc(catKeys(a).join(' '))}">
           <a class="sec-title" href="/security/${a.slug}/">${esc(a.title)}</a>
           <p class="sec-meta">${esc(a.cve)} · ${esc(a.vendor)} ${esc(a.product)}${a.score ? ` · CVSS ${esc(a.score)}` : ''}</p>
           <p class="sec-meta">${badges(a)} <span>Updated <time datetime="${day(a.updated)}">${day(a.updated)}</time></span></p>
@@ -90,6 +143,8 @@ function indexPage(articles) {
     description: 'Critical vulnerabilities with affected versions, fixes and dated sources, reviewed before publication.',
     body: `      <h1>Security</h1>
       <p class="sec-intro">Critical vulnerabilities, scored above 8 or exploited in the wild, with affected versions, fixes and dated sources. Each note is reviewed before publication and updated when vendors ship fixes.</p>
+${filterBar(articles)}
+      <p class="sec-empty" data-empty hidden>No notes in this category.</p>
       ${articles.length ? `<ul class="sec-list">\n${items}\n      </ul>` : '<p class="sec-empty">No notes published yet.</p>'}`,
   })
 }
@@ -102,6 +157,7 @@ function articlePage(a) {
       <article class="sec-article">
         <h1>${esc(a.title)}</h1>
         <p class="sec-meta">${badges(a)}</p>
+        ${catKeys(a).length ? `<p class="sec-cats">${catKeys(a).map(k => `<a class="sec-cat" href="/security/#${k}">${esc(CATEGORIES[k])}</a>`).join(' ')}</p>` : ''}
         <dl class="sec-facts">
           <dt>CVE</dt><dd>${esc(a.cve)}</dd>
           <dt>Product</dt><dd>${esc(a.vendor)} ${esc(a.product)}</dd>

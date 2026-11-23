@@ -101,3 +101,67 @@
   padding-top: 1rem;
   border-top: 1px solid rgba(64, 190, 220, 0.25);
 }
+
+/* Category filters on the index. */
+.sec-filters ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  padding: 0;
+}
+
+.sec-filter {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid rgba(64, 190, 220, 0.4);
+  border-radius: 999px;
+  color: #a9b6cf;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.sec-filter:hover,
+.sec-filter:focus-visible {
+  border-color: #40bedc;
+  color: #cfe8f2;
+}
+
+.sec-filter.is-active {
+  background: #40bedc;
+  border-color: #40bedc;
+  color: #0b1522;
+}
+
+.sec-filter-n {
+  color: #8a96ad;
+  font-size: 0.78rem;
+}
+
+.sec-filter.is-active .sec-filter-n {
+  color: rgba(11, 21, 34, 0.7);
+}
+
+/* Category chips on an article. */
+.sec-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.9rem;
+}
+
+.sec-cat {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid rgba(64, 190, 220, 0.4);
+  border-radius: 999px;
+  color: #9fe3f2;
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.sec-cat:hover,
+.sec-cat:focus-visible {
+  border-color: #40bedc;
+}
