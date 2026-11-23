@@ -1,6 +1,10 @@
 # pagaia
 
-Public portal for [pagaia.xyz](https://pagaia.xyz), built with React and Vite. It currently contains the landing page and the Pagaia-Man origin comic, which becomes the manifesto.
+Public portal for [pagaia.xyz](https://pagaia.xyz), built with React and Vite. It contains the landing page, the Pagaia-Man origin comic, which serves as the manifesto, and the security notes.
+
+## Security notes
+
+The security section is generated at build time by scripts/security-pages.mjs from the JSON files in content/security, one per article. Those files come from the private editorial back office, only for revisions Paolo approved and queued for publication. Each holds the approved Markdown, its rendered HTML and the content digest; the build stops if the content does not match the digest or if the HTML contains anything executable. The generated pages under security/ are plain HTML and are not committed.
 
 ## Local development
 

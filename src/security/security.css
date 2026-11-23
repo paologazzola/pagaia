@@ -1,0 +1,103 @@
+/* Security section: index of notes and article pages. */
+
+.sec {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2rem 20px 3rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.sec h1 {
+  color: #40bedc;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  line-height: 1.3;
+  margin-bottom: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.sec h2 {
+  color: #40bedc;
+  font-size: 1.1rem;
+  margin: 1.8rem 0 0.6rem;
+}
+
+.sec p,
+.sec ul,
+.sec dl {
+  margin-bottom: 0.9rem;
+}
+
+.sec a {
+  color: #f5e642;
+  overflow-wrap: anywhere;
+}
+
+.sec code {
+  overflow-wrap: anywhere;
+  color: #9fe3f2;
+}
+
+.sec-intro {
+  color: #a9b6cf;
+}
+
+.sec-empty,
+.sec-meta,
+.sec-note,
+.sec-back {
+  color: #8a96ad;
+  font-size: 0.85rem;
+}
+
+.sec-list {
+  list-style: none;
+  border-top: 1px solid rgba(64, 190, 220, 0.25);
+}
+
+.sec-list li {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(64, 190, 220, 0.25);
+}
+
+.sec-list .sec-meta {
+  margin: 0.3rem 0 0;
+}
+
+.sec-title {
+  font-size: 1rem;
+}
+
+.sec-badge {
+  display: inline-block;
+  padding: 0 0.45rem;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+.sec-badge.fixed { color: #7ee0a1; }
+.sec-badge.open { color: #f5c542; }
+.sec-badge.withdrawn { color: #a9b6cf; }
+.sec-badge.exploited { color: #ff7a6b; }
+
+.sec-facts {
+  display: grid;
+  grid-template-columns: minmax(7rem, max-content) 1fr;
+  gap: 0.2rem 1rem;
+  font-size: 0.88rem;
+}
+
+.sec-facts dt { color: #8a96ad; }
+.sec-facts dd { overflow-wrap: anywhere; }
+
+.sec-body ul {
+  padding-left: 1.3rem;
+}
+
+.sec-note {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(64, 190, 220, 0.25);
+}

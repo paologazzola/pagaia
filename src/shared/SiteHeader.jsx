@@ -3,6 +3,7 @@ import './site.css'
 const SECTIONS = [
   { href: '/', label: 'Home', id: 'home' },
   { href: '/manifesto/', label: 'Manifesto', id: 'manifesto' },
+  { href: '/security/', label: 'Security', id: 'security' },
 ]
 
 export default function SiteHeader({ current }) {

@@ -1,10 +1,14 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { generateSecurityPages } from './scripts/security-pages.mjs'
 
 // One HTML entry per section, so every route is a real file that survives a direct refresh
 // on any static host.
 const page = path => fileURLToPath(new URL(path, import.meta.url))
+
+// The security pages are generated from content/security before Vite reads them.
+const security = generateSecurityPages(fileURLToPath(new URL('.', import.meta.url)))
 
 export default defineConfig({
   plugins: [react()],
@@ -13,6 +17,7 @@ export default defineConfig({
       input: {
         home: page('./index.html'),
         manifesto: page('./manifesto/index.html'),
+        ...security,
       },
     },
   },
