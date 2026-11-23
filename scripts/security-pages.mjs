@@ -15,30 +15,22 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 
 const day = iso => (iso || '').slice(0, 10)
 
-// Category keys mirror the editorial category vocabulary. The back office
-// assigns them; the site maps only the known keys to labels and ignores
-// anything else, so an unexpected value can never reach the page.
+// Category keys mirror the editorial vocabulary (editorial/internal/category):
+// programming languages, then one area. The back office assigns them; the site
+// maps only the known keys to labels and ignores anything else, so an
+// unexpected value can never reach the page.
 const CATEGORIES = {
-  'remote-code-execution': 'Remote code execution',
-  'command-injection': 'Command injection',
-  'code-injection': 'Code injection',
-  'sql-injection': 'SQL injection',
-  xss: 'Cross-site scripting',
-  xxe: 'XML external entity',
-  deserialization: 'Insecure deserialization',
-  'path-traversal': 'Path traversal',
-  'file-upload': 'Unrestricted file upload',
-  'auth-bypass': 'Authentication bypass',
-  'access-control': 'Broken access control',
-  ssrf: 'Server-side request forgery',
-  csrf: 'Cross-site request forgery',
-  'memory-safety': 'Memory safety',
-  'race-condition': 'Race condition',
-  dos: 'Denial of service',
-  'info-disclosure': 'Information disclosure',
-  crypto: 'Cryptographic weakness',
-  'hardcoded-credentials': 'Hard-coded credentials',
-  other: 'Other',
+  php: 'PHP',
+  javascript: 'JavaScript / Node.js',
+  python: 'Python',
+  java: 'Java',
+  dotnet: '.NET',
+  go: 'Go',
+  ruby: 'Ruby',
+  rust: 'Rust',
+  os: 'Operating systems',
+  network: 'Networking & servers',
+  software: 'Software',
 }
 const CAT_ORDER = Object.keys(CATEGORIES)
 
