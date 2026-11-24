@@ -29,11 +29,23 @@ export default function Home() {
         <section className="hero">
           <div className="wrap">
             <p className="kicker">Pagaia-Man was here</p>
-            <h1 className="hero-title">Security notes, told like a <em>story.</em></h1>
-            <p className="hero-sub">
-              Critical vulnerabilities, explained with heart and rigour. A comic to open it,
-              dated field notes to prove it, puzzles to end the day.
-            </p>
+            {SECTIONS.security ? (
+              <>
+                <h1 className="hero-title">Security notes, told like a <em>story.</em></h1>
+                <p className="hero-sub">
+                  Critical vulnerabilities, explained with heart and rigour. A comic to open it,
+                  dated field notes to prove it, puzzles to end the day.
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="hero-title">A paddle for rough <em>digital waters.</em></h1>
+                <p className="hero-sub">
+                  It begins with a comic. Dated security notes and account-free puzzles
+                  are on the way.
+                </p>
+              </>
+            )}
             <a className="btn-rose" href="/manifesto/">Start with the comic <span aria-hidden="true">→</span></a>
           </div>
         </section>
