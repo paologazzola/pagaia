@@ -1,17 +1,53 @@
+/* Design tokens and base, shared by every page (home, manifesto, security).
+   Direction "Ink & romance": warm paper, ink linework, a touch of rose. */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+:root {
+  --paper: #f4efe6;
+  --card: #fbf8f1;
+  --ink: #161310;
+  --muted: #6a6157;
+  --line: #ddd4c4;
+  --rose: #e2503f;
+  --rose-ink: #b23a2b;
+  --gold: #c89b3c;
+  --green-bg: #e7f0e4;
+  --green-ink: #2f6b3a;
+  --radius: 10px;
+  --wrap: 1120px;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --shadow: 5px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
 html, body, #root {
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
 }
 
 body {
-  background: #080b12;
-  color: #c8d6f0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 5px 5px;
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

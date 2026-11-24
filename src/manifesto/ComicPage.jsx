@@ -47,7 +47,9 @@ function ComicPanel({ panel, number, total }) {
     >
       <figcaption className="visually-hidden">Panel {number} of {total}. {panel.scene}</figcaption>
       {before.map((c, i) => <Caption key={i} caption={c} />)}
-      <div className="panel-art"><Art /></div>
+      <div className="panel-art">
+        {panel.image ? <img className="panel-img" src={panel.image} alt={panel.scene} /> : <Art />}
+      </div>
       {after.map((c, i) => <Caption key={i} caption={c} />)}
       {panel.dialogue.length > 0 && (
         <div className="panel-dialogue">
@@ -64,6 +66,26 @@ function Ending() {
       <svg className="tbc-stars" viewBox="0 0 820 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
         <Stars n={80} seed={99} />
       </svg>
+      {/* A touch of colour in the night: a gold moon and the ginger cat. */}
+      <svg className="tbc-moon" viewBox="0 0 60 60" aria-hidden="true" focusable="false">
+        <circle cx="30" cy="30" r="21" fill="#e8c86a" />
+        <circle cx="39" cy="25" r="18" fill="var(--ink)" />
+      </svg>
+      <svg className="tbc-cat" viewBox="0 0 150 92" aria-hidden="true" focusable="false">
+        <path d="M120 60 Q150 44 130 22 Q118 10 110 26" fill="none" stroke="#d9822b" strokeWidth="11" strokeLinecap="round" />
+        <ellipse cx="74" cy="62" rx="54" ry="27" fill="#d9822b" />
+        <path d="M34 50 q22 14 56 2" fill="none" stroke="#b5651d" strokeWidth="4" opacity="0.7" />
+        <path d="M44 66 q20 10 44 2" fill="none" stroke="#b5651d" strokeWidth="4" opacity="0.6" />
+        <circle cx="36" cy="50" r="21" fill="#e08a3c" />
+        <polygon points="18,36 26,10 40,32" fill="#e08a3c" />
+        <polygon points="34,32 50,12 54,38" fill="#e08a3c" />
+        <polygon points="23,30 28,18 35,30" fill="var(--rose)" opacity="0.6" />
+        <path d="M24 48 q5 5 10 0" fill="none" stroke="#5a3310" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M40 48 q5 5 10 0" fill="none" stroke="#5a3310" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M37 55 l-3 3 h6 z" fill="var(--rose)" />
+        <path d="M18 62 Q36 70 54 62" fill="none" stroke="var(--rose)" strokeWidth="5" strokeLinecap="round" />
+        <circle cx="36" cy="67" r="3.2" fill="var(--gold)" />
+      </svg>
       <h2 className="tbc-title">It was all a dream.</h2>
       <div className="tbc-copy">
         <p>
@@ -79,15 +101,15 @@ function Ending() {
         <p className="tbc-note">pagaia.xyz — coming soon. probably. if the cat cooperates.</p>
       </div>
       <svg className="tbc-mark" viewBox="0 0 120 30" aria-hidden="true" focusable="false">
-        <path d="M4 15 L18 7 L24 15 L18 23 Z" fill="#f5e642" opacity="0.7" />
-        <rect x="24" y="13" width="72" height="4" rx="2" fill="#f5e642" opacity="0.5" />
-        <path d="M116 15 L102 7 L96 15 L102 23 Z" fill="#f5e642" opacity="0.7" />
+        <path d="M4 15 L18 7 L24 15 L18 23 Z" fill="var(--gold)" opacity="0.8" />
+        <rect x="24" y="13" width="72" height="4" rx="2" fill="var(--gold)" opacity="0.55" />
+        <path d="M116 15 L102 7 L96 15 L102 23 Z" fill="var(--gold)" opacity="0.8" />
         <g transform="translate(50,2) scale(0.35)">
-          <circle cx="38" cy="32" r="20" fill="#f5e642" opacity="0.6" />
-          <polygon points="22,18 16,4 30,16" fill="#f5e642" opacity="0.6" />
-          <polygon points="54,18 60,4 46,16" fill="#f5e642" opacity="0.6" />
-          <ellipse cx="38" cy="58" rx="26" ry="22" fill="#f5e642" opacity="0.6" />
-          <path d="M62,68 Q85,45 80,22 Q76,8 68,18" fill="none" stroke="#f5e642" strokeWidth="6" strokeLinecap="round" opacity="0.6" />
+          <circle cx="38" cy="32" r="20" fill="var(--gold)" opacity="0.65" />
+          <polygon points="22,18 16,4 30,16" fill="var(--gold)" opacity="0.65" />
+          <polygon points="54,18 60,4 46,16" fill="var(--gold)" opacity="0.65" />
+          <ellipse cx="38" cy="58" rx="26" ry="22" fill="var(--gold)" opacity="0.65" />
+          <path d="M62,68 Q85,45 80,22 Q76,8 68,18" fill="none" stroke="var(--gold)" strokeWidth="6" strokeLinecap="round" opacity="0.65" />
         </g>
       </svg>
     </div>

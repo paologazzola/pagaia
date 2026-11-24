@@ -1,106 +1,138 @@
-/* Security section: index of notes and article pages. */
+/* Security section: index of notes and article pages. Direction "Ink & romance". */
 
 .sec {
-  max-width: 46rem;
+  max-width: 44rem;
   margin: 0 auto;
-  padding: 2rem 20px 3rem;
-  line-height: 1.6;
-  font-size: 0.95rem;
+  padding: 44px 24px 56px;
+  line-height: 1.7;
+  font-size: 1.02rem;
 }
 
 .sec h1 {
-  color: #40bedc;
-  font-size: clamp(1.3rem, 4vw, 1.8rem);
-  line-height: 1.3;
-  margin-bottom: 0.8rem;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
   overflow-wrap: anywhere;
 }
 
+.sec-body h2,
 .sec h2 {
-  color: #40bedc;
-  font-size: 1.1rem;
-  margin: 1.8rem 0 0.6rem;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 2rem 0 0.6rem;
+}
+
+.sec-body h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin: 1.5rem 0 0.4rem;
 }
 
 .sec p,
 .sec ul,
+.sec ol,
 .sec dl {
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
 }
 
 .sec a {
-  color: #f5e642;
+  color: var(--rose-ink);
+  text-underline-offset: 2px;
   overflow-wrap: anywhere;
 }
+.sec a:hover { text-decoration-thickness: 2px; }
 
 .sec code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: rgba(22, 19, 16, 0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
   overflow-wrap: anywhere;
-  color: #9fe3f2;
 }
 
-.sec-intro {
-  color: #a9b6cf;
-}
+.sec-intro { color: var(--muted); font-size: 1.1rem; }
 
-.sec-empty,
-.sec-meta,
-.sec-note,
-.sec-back {
-  color: #8a96ad;
-  font-size: 0.85rem;
-}
+.sec-empty { color: var(--muted); }
+.sec-back { margin-bottom: 1.5rem; }
+.sec-back a { font-family: var(--mono); font-size: 0.85rem; font-weight: 600; }
+.sec-meta { color: var(--muted); font-size: 0.9rem; font-family: var(--mono); }
 
-.sec-list {
-  list-style: none;
-  border-top: 1px solid rgba(64, 190, 220, 0.25);
-}
-
+/* Index list as editorial cards. */
+.sec-list { list-style: none; display: grid; gap: 14px; }
 .sec-list li {
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(64, 190, 220, 0.25);
+  background: var(--card);
+  border: 2.5px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
 }
-
-.sec-list .sec-meta {
-  margin: 0.3rem 0 0;
-}
-
+.sec-list .sec-meta { margin: 0.45rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.7rem; }
 .sec-title {
-  font-size: 1rem;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1.22;
+  color: var(--ink);
+  text-decoration: none;
 }
+.sec-title:hover { color: var(--rose-ink); }
 
+/* Severity / status badges, matching the home chips. */
 .sec-badge {
   display: inline-block;
-  padding: 0 0.45rem;
-  border: 1px solid currentColor;
-  border-radius: 3px;
-  font-size: 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
 }
+.sec-badge.exploited { background: var(--rose); color: #fff; }
+.sec-badge.fixed { background: #fff; color: var(--green-ink); }
+.sec-badge.open { background: var(--gold); color: #2a2208; }
+.sec-badge.withdrawn { background: var(--paper); color: var(--muted); }
 
-.sec-badge.fixed { color: #7ee0a1; }
-.sec-badge.open { color: #f5c542; }
-.sec-badge.withdrawn { color: #a9b6cf; }
-.sec-badge.exploited { color: #ff7a6b; }
+/* Article page. */
+.sec-article h1 { margin-bottom: 0.8rem; }
+.sec-article > .sec-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 
 .sec-facts {
   display: grid;
   grid-template-columns: minmax(7rem, max-content) 1fr;
-  gap: 0.2rem 1rem;
-  font-size: 0.88rem;
+  gap: 0.35rem 1.2rem;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 1.6rem;
 }
+.sec-facts dt { color: var(--muted); }
+.sec-facts dd { overflow-wrap: anywhere; font-weight: 500; }
 
-.sec-facts dt { color: #8a96ad; }
-.sec-facts dd { overflow-wrap: anywhere; }
-
-.sec-body ul {
-  padding-left: 1.3rem;
-}
+.sec-body { font-size: 1.05rem; }
+.sec-body ul, .sec-body ol { padding-left: 1.3rem; }
+.sec-body li { margin-bottom: 0.3rem; }
+.sec-body strong { font-weight: 700; }
 
 .sec-note {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(64, 190, 220, 0.25);
+  margin-top: 2.2rem;
+  padding-top: 1.1rem;
+  border-top: 2px solid var(--line);
+  color: var(--muted);
+  font-size: 0.88rem;
 }
+.sec-note code { background: none; padding: 0; }
 
 /* Category filters on the index. */
 .sec-filters ul {
@@ -108,60 +140,38 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.4rem;
   padding: 0;
 }
-
 .sec-filter {
   display: inline-block;
-  padding: 0.15rem 0.6rem;
-  border: 1px solid rgba(64, 190, 220, 0.4);
+  font-family: var(--mono);
+  padding: 0.25rem 0.7rem;
+  border: 2px solid var(--ink);
   border-radius: 999px;
-  color: #a9b6cf;
-  font-size: 0.82rem;
+  color: var(--ink);
+  background: var(--card);
+  font-size: 0.8rem;
+  font-weight: 600;
   text-decoration: none;
 }
-
 .sec-filter:hover,
-.sec-filter:focus-visible {
-  border-color: #40bedc;
-  color: #cfe8f2;
-}
-
-.sec-filter.is-active {
-  background: #40bedc;
-  border-color: #40bedc;
-  color: #0b1522;
-}
-
-.sec-filter-n {
-  color: #8a96ad;
-  font-size: 0.78rem;
-}
-
-.sec-filter.is-active .sec-filter-n {
-  color: rgba(11, 21, 34, 0.7);
-}
+.sec-filter:focus-visible { background: var(--paper); }
+.sec-filter.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.sec-filter-n { color: var(--muted); font-size: 0.75rem; margin-left: 0.15rem; }
+.sec-filter.is-active .sec-filter-n { color: rgba(244, 239, 230, 0.7); }
 
 /* Category chips on an article. */
-.sec-cats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0 0 0.9rem;
-}
-
+.sec-cats { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 1.1rem; }
 .sec-cat {
   display: inline-block;
-  padding: 0.1rem 0.55rem;
-  border: 1px solid rgba(64, 190, 220, 0.4);
+  font-family: var(--mono);
+  padding: 0.15rem 0.6rem;
+  border: 2px solid var(--line);
   border-radius: 999px;
-  color: #9fe3f2;
-  font-size: 0.78rem;
+  color: var(--muted);
+  font-size: 0.75rem;
   text-decoration: none;
 }
-
 .sec-cat:hover,
-.sec-cat:focus-visible {
-  border-color: #40bedc;
-}
+.sec-cat:focus-visible { border-color: var(--ink); color: var(--ink); }

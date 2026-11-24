@@ -3,18 +3,19 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 4px 16px;
-  padding: 10px 20px;
-  background: #11182a;
-  color: #c8d6f0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  padding: 12px 24px;
+  background: var(--card);
+  border-bottom: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--mono);
 }
 
 .chapter-index-label {
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 0.25em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #8a96ad;
+  color: var(--muted);
 }
 
 .chapter-index ol {
@@ -25,7 +26,8 @@
 }
 
 .chapter-index a {
-  color: #f5e642;
-  font-size: 0.95rem;
+  color: var(--rose-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
   text-underline-offset: 4px;
 }

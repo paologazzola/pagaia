@@ -15,6 +15,17 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 
 const day = iso => (iso || '').slice(0, 10)
 
+// Vendor and product often repeat (e.g. "UnrealIRCd UnrealIRCd"); show them once.
+const who = (vendor, product) => {
+  const v = String(vendor || '').trim()
+  const p = String(product || '').trim()
+  if (!v) return p
+  if (!p) return v
+  if (p.toLowerCase().includes(v.toLowerCase())) return p
+  if (v.toLowerCase().includes(p.toLowerCase())) return v
+  return `${v} · ${p}`
+}
+
 // Category keys mirror the editorial vocabulary (editorial/internal/category):
 // programming languages, then one area. The back office assigns them; the site
 // maps only the known keys to labels and ignores anything else, so an
@@ -61,18 +72,58 @@ function check(a, file) {
   }
 }
 
+// The paddle mark, kept in sync with src/shared/PaddleLogo.jsx. Inlined because
+// this generator runs in plain Node and cannot import the JSX component.
+const LOGO = size =>
+  `<svg class="paddle-logo" width="${size}" height="${size}" viewBox="0 0 40 40" fill="none" aria-hidden="true" focusable="false">` +
+  `<circle cx="20" cy="20" r="18" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"/>` +
+  `<path d="M20 5.5c5.5 3.4 8 7.6 8 12s-2.5 8.6-8 12c-5.5-3.4-8-7.6-8-12s2.5-8.6 8-12z" fill="none" stroke="var(--ink)" stroke-width="2.5"/>` +
+  `<path d="M20 5.5c5.5 3.4 8 7.6 8 12 0 .9-.1 1.8-.3 2.7H20V5.5z" fill="var(--rose)"/>` +
+  `<rect x="18.4" y="18" width="3.2" height="15" rx="1.6" fill="var(--ink)"/></svg>`
+
 function header() {
   return `<a class="skip-link" href="#main">Skip to content</a>
+    <p class="site-wip" role="note">Work in progress — the site is taking shape.</p>
     <header class="site-header">
-      <a class="site-brand" href="/">pagaia.xyz</a>
+      <a class="site-brand" href="/" aria-label="pagaia home">
+        ${LOGO(32)}
+        <span class="site-wordmark">pagaia</span>
+      </a>
       <nav class="site-nav" aria-label="Main">
         <ul>
-          <li><a href="/">Home</a></li>
           <li><a href="/manifesto/">Manifesto</a></li>
           <li><a href="/security/" aria-current="page">Security</a></li>
+          <li><span class="nav-soon">Game<span class="soon-tag">soon</span></span></li>
         </ul>
       </nav>
     </header>`
+}
+
+function footer() {
+  return `<footer class="site-footer">
+      <div class="foot-wrap">
+        <div class="foot-brand">
+          <a class="foot-logo" href="/" aria-label="pagaia home">${LOGO(28)}<span>pagaia</span></a>
+          <p class="foot-tag">Told with heart and rigour. Paddle through the noise.</p>
+        </div>
+        <div class="foot-col"><h2>Sections</h2><ul>
+          <li><a href="/manifesto/">Manifesto</a></li>
+          <li><a href="/security/">Security</a></li>
+          <li><span class="foot-muted">Game · soon</span></li>
+        </ul></div>
+        <div class="foot-col"><h2>Security</h2><ul>
+          <li><a href="/security/">Latest notes</a></li>
+          <li><span class="foot-muted">How we select</span></li>
+          <li><span class="foot-muted">Sources</span></li>
+        </ul></div>
+        <div class="foot-col"><h2>About</h2><ul>
+          <li><a href="/manifesto/">What is Pagaia</a></li>
+          <li><span class="foot-muted">Contact · soon</span></li>
+          <li><span class="foot-muted">RSS · soon</span></li>
+        </ul></div>
+      </div>
+      <div class="foot-bar"><span>© ${new Date().getFullYear()} pagaia.xyz</span><span>made with ink</span></div>
+    </footer>`
 }
 
 function page({ title, description, body }) {
@@ -82,6 +133,7 @@ function page({ title, description, body }) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="${esc(description)}" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>${esc(title)}</title>
     <script type="module" src="/src/security/main.js"></script>
   </head>
@@ -90,7 +142,7 @@ function page({ title, description, body }) {
     <main id="main" class="sec">
 ${body}
     </main>
-    <footer class="site-footer"><a href="/security/">Security</a> · <a href="/">pagaia.xyz</a></footer>
+    ${footer()}
   </body>
 </html>
 `
@@ -127,7 +179,7 @@ function filterBar(articles) {
 function indexPage(articles) {
   const items = articles.map(a => `        <li data-cat="${esc(catKeys(a).join(' '))}">
           <a class="sec-title" href="/security/${a.slug}/">${esc(a.title)}</a>
-          <p class="sec-meta">${esc(a.cve)} · ${esc(a.vendor)} ${esc(a.product)}${a.score ? ` · CVSS ${esc(a.score)}` : ''}</p>
+          <p class="sec-meta">${esc(a.cve)} · ${esc(who(a.vendor, a.product))}${a.score ? ` · CVSS ${esc(a.score)}` : ''}</p>
           <p class="sec-meta">${badges(a)} <span>Updated <time datetime="${day(a.updated)}">${day(a.updated)}</time></span></p>
         </li>`).join('\n')
   return page({
@@ -152,7 +204,7 @@ function articlePage(a) {
         ${catKeys(a).length ? `<p class="sec-cats">${catKeys(a).map(k => `<a class="sec-cat" href="/security/#${k}">${esc(CATEGORIES[k])}</a>`).join(' ')}</p>` : ''}
         <dl class="sec-facts">
           <dt>CVE</dt><dd>${esc(a.cve)}</dd>
-          <dt>Product</dt><dd>${esc(a.vendor)} ${esc(a.product)}</dd>
+          <dt>Product</dt><dd>${esc(who(a.vendor, a.product))}</dd>
           ${a.score ? `<dt>CVSS</dt><dd>${esc(a.score)} (v${esc(a.cvss_version)})</dd>` : ''}
           ${a.exploited ? `<dt>Exploited since</dt><dd>${esc(a.exploited_since)} (CISA KEV)</dd>` : ''}
           <dt>Published</dt><dd><time datetime="${day(a.first_published)}">${day(a.first_published)}</time></dd>

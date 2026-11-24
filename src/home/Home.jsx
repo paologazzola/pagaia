@@ -1,101 +1,102 @@
-import { useEffect, useRef } from 'react'
 import SiteHeader from '../shared/SiteHeader.jsx'
+import SiteFooter from '../shared/SiteFooter.jsx'
+import { SECTIONS } from '../shared/sections.js'
 import './Home.css'
 
-function PaddleLogo() {
-  return (
-    <svg className="paddle-logo" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-      <path d="M8 40 L32 20 L44 40 L32 60 Z" fill="currentColor" opacity="0.9" />
-      <rect x="44" y="37" width="112" height="6" rx="3" fill="currentColor" opacity="0.7" />
-      <path d="M192 40 L168 20 L156 40 L168 60 Z" fill="currentColor" opacity="0.9" />
-      <rect x="90" y="34" width="4" height="12" rx="2" fill="currentColor" opacity="0.4" />
-      <rect x="106" y="34" width="4" height="12" rx="2" fill="currentColor" opacity="0.4" />
-    </svg>
-  )
-}
+// The latest security notes (summary fields only) are injected by the build,
+// and only when the security section is enabled — see latestNotes() in
+// vite.config.js — so hidden-section content never ships in the public bundle.
+const notes = __LATEST_NOTES__
 
-// Falling characters behind the page. Skipped when the reader prefers reduced motion.
-function useMatrixRain(canvasRef) {
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-    let animId
-    let drops = []
-    const chars = '01アイウエオカキクケコサシスセソタチツテト'
+const day = iso => String(iso || '').slice(0, 10)
 
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-      drops = Array.from({ length: Math.floor(canvas.width / 20) }, () => Math.random() * -50)
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(8, 11, 18, 0.05)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = 'rgba(64, 190, 220, 0.12)'
-      ctx.font = '14px JetBrains Mono, monospace'
-      drops.forEach((y, i) => {
-        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 20, y * 20)
-        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0
-        else drops[i] += 0.5
-      })
-      animId = requestAnimationFrame(draw)
-    }
-    draw()
-    return () => {
-      cancelAnimationFrame(animId)
-      window.removeEventListener('resize', resize)
-    }
-  }, [canvasRef])
+// Vendor and product often repeat (e.g. "UnrealIRCd UnrealIRCd"); show them once.
+const who = (vendor, product) => {
+  const v = String(vendor || '').trim()
+  const p = String(product || '').trim()
+  if (!v) return p
+  if (!p) return v
+  if (p.toLowerCase().includes(v.toLowerCase())) return p
+  if (v.toLowerCase().includes(p.toLowerCase())) return v
+  return `${v} · ${p}`
 }
 
 export default function Home() {
-  const canvasRef = useRef(null)
-  useMatrixRain(canvasRef)
-
   return (
-    <div className="container">
-      <canvas ref={canvasRef} className="matrix-bg" aria-hidden="true" />
+    <>
       <SiteHeader current="home" />
+      <main id="main">
+        <section className="hero">
+          <div className="wrap">
+            <p className="kicker">Pagaia-Man was here</p>
+            <h1 className="hero-title">Security notes, told like a <em>story.</em></h1>
+            <p className="hero-sub">
+              Critical vulnerabilities, explained with heart and rigour. A comic to open it,
+              dated field notes to prove it, puzzles to end the day.
+            </p>
+            <a className="btn-rose" href="/manifesto/">Start with the comic <span aria-hidden="true">→</span></a>
+          </div>
+        </section>
 
-      <main className="content" id="main">
-        <div className="logo-wrapper">
-          <PaddleLogo />
-        </div>
+        <section className="band">
+          <div className="wrap">
+            <h2 className="eyebrow">// Explore</h2>
+            <div className="cards">
+              <a className="card" href="/manifesto/">
+                <span className="card-em" aria-hidden="true">📖</span>
+                <h3>Manifesto</h3>
+                <p>Pagaia-Man #1 — black ink, a touch of red, the reason for all of this.</p>
+                <span className="card-go">Read the comic →</span>
+              </a>
+              {SECTIONS.security ? (
+                <a className="card" href="/security/">
+                  <span className="card-em" aria-hidden="true">🛡️</span>
+                  <h3>Security</h3>
+                  <p>Dated notes on critical CVEs: what is exposed, what to do, and the sources.</p>
+                  <span className="card-go">Browse notes →</span>
+                </a>
+              ) : (
+                <div className="card card-soon" aria-disabled="true">
+                  <span className="card-em" aria-hidden="true">🛡️</span>
+                  <h3>Security <span className="soon-tag">soon</span></h3>
+                  <p>Dated notes on critical CVEs: what is exposed, what to do, and the sources.</p>
+                  <span className="card-go card-go-muted">coming soon</span>
+                </div>
+              )}
+              <div className="card card-soon" aria-disabled="true">
+                <span className="card-em" aria-hidden="true">🧩</span>
+                <h3>Game <span className="soon-tag">soon</span></h3>
+                <p>Account-free logic puzzles from a seed. Fair, reproducible, quiet.</p>
+                <span className="card-go card-go-muted">coming soon</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <p className="site-name">pagaia.xyz</p>
-
-        <div className="divider" aria-hidden="true">
-          <span className="divider-line" />
-          <span className="divider-icon">{'</>'}</span>
-          <span className="divider-line" />
-        </div>
-
-        <h1 className="headline">
-          <span className="visually-hidden">Under construction</span>
-          <span className="glitch" data-text="under construction" aria-hidden="true">under construction</span>
-        </h1>
-
-        <p className="subtext">
-          <span className="prompt" aria-hidden="true">$</span>
-          <span className="cmd">building something</span>
-          <span className="cursor" aria-hidden="true" />
-        </p>
-
-        <a className="home-cta" href="/manifesto/">
-          <span className="home-cta-kicker">Start here</span>
-          <span className="home-cta-title">Read the manifesto: Pagaia-Man #1</span>
-        </a>
+        {SECTIONS.security && notes.length > 0 && (
+          <section className="band">
+            <div className="wrap">
+              <h2 className="eyebrow">// Latest security notes</h2>
+              <div className="notes">
+                {notes.map(n => (
+                  <a className="note" key={n.slug} href={`/security/${n.slug}/`}>
+                    <div className="note-top">
+                      {n.exploited && <span className="chip chip-red">Actively exploited</span>}
+                      {n.patch_status === 'patched' && <span className="chip chip-green">Fix available</span>}
+                      {n.score != null && <span className="note-score">{n.score}</span>}
+                    </div>
+                    <p className="note-cve">{n.cve} · {who(n.vendor, n.product)}</p>
+                    <h3 className="note-title">{n.title}</h3>
+                    <p className="note-meta">Updated {day(n.updated || n.approved_at)}</p>
+                  </a>
+                ))}
+              </div>
+              <p className="notes-more"><a href="/security/">All security notes →</a></p>
+            </div>
+          </section>
+        )}
       </main>
-
-      <footer className="footer">
-        <span>pagaia.xyz</span>
-        <span className="sep" aria-hidden="true">·</span>
-        <span>{'// coming soon'}</span>
-      </footer>
-    </div>
+      <SiteFooter />
+    </>
   )
 }

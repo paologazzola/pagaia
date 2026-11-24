@@ -17,6 +17,25 @@ npm run dev
 
 Open the local URL printed by Vite (usually http://localhost:5173). Changes reload automatically.
 
+### Enabled areas and full preview
+
+Which areas are public is set at build time (see `src/shared/sections.js`). By default only
+the manifesto is shown and the security section is hidden (work in progress). To preview the
+whole site, security included, with the real content in `content/security/`:
+
+```bash
+npm run dev:full       # hot-reloading preview with every area enabled
+npm run preview:full   # production-like build and preview, every area enabled
+```
+
+Both are served from the development VM. To view them from the workstation over the VPN,
+forward the port with SSH and open the local address, for example:
+
+```bash
+ssh -L 4173:localhost:4173 pagaia-dev-vpn   # then open http://localhost:4173 (preview:full)
+ssh -L 5173:localhost:5173 pagaia-dev-vpn   # then open http://localhost:5173 (dev:full)
+```
+
 ## Production build
 
 Run `npm run build` to generate optimized static files in dist/. Use `npm run preview` for a local preview.

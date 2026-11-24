@@ -1,184 +1,187 @@
-/* ── Comic Page – 80s Style ──────────────────────────────── */
+/* ── Comic page — "Ink & romance" ──────────────────────────────
+   Black-and-white panels with a touch of rose, clearly separated by gutters.
+   The artwork is rendered in ink (grayscale); colour lives in the frame:
+   captions, bubbles, the cover and the ending. Panels accept a PNG later. */
 
 .comic-section {
   position: relative;
   width: 100%;
-  background: #f5e8c8;
-  background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.04) 39px, rgba(0,0,0,0.04) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.04) 39px, rgba(0,0,0,0.04) 40px);
+  /* Day to starry night: the page darkens as the reader scrolls down. */
+  background: linear-gradient(
+    180deg,
+    var(--paper) 0%,
+    var(--paper) 15%,
+    #e6ddd0 30%,
+    #b9aec0 50%,
+    #6c6386 68%,
+    #342f52 84%,
+    #15122a 100%
+  );
   font-family: 'Bangers', 'Impact', cursive;
-  border-top: 6px solid #000;
+  overflow: hidden;
 }
 
-/* ── Comic Book Cover Header ── */
+/* Stars, fading in over the lower (darker) half only. */
+.comic-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.3px 1.3px at 24px 48px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 120px 140px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.6px 1.6px at 180px 80px, rgba(255, 246, 224, 0.85), transparent),
+    radial-gradient(1px 1px at 70px 190px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.2px 1.2px at 230px 30px, rgba(255, 255, 255, 0.75), transparent);
+  background-size: 260px 230px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 52%, #000 82%);
+  mask-image: linear-gradient(180deg, transparent 52%, #000 82%);
+  opacity: 0.85;
+}
+
+.comic-cover,
+.transcript,
+.comic-grid { position: relative; z-index: 1; }
+
+/* ── Cover banner ── */
 .comic-cover {
-  background: #e63946;
-  border-bottom: 6px solid #000;
-  padding: 12px 24px 0;
+  background: var(--ink);
+  border-bottom: 3px solid var(--ink);
+  padding: 22px 24px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   overflow: hidden;
 }
-
 .comic-cover::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1px);
-  background-size: 10px 10px;
+  background-image: radial-gradient(circle, rgba(244, 239, 230, 0.12) 1px, transparent 1px);
+  background-size: 11px 11px;
 }
-
 .comic-publisher {
   font-family: 'Bangers', cursive;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #fff;
-  opacity: 0.9;
+  color: var(--gold);
   z-index: 1;
 }
-
 .comic-title {
   font-family: 'Bangers', cursive;
   font-weight: 400;
   font-size: clamp(3rem, 10vw, 6rem);
-  color: #f5e642;
-  text-shadow:
-    4px 4px 0 #000,
-    -2px -2px 0 #000,
-    2px -2px 0 #000,
-    -2px 2px 0 #000;
-  line-height: 0.9;
+  color: var(--paper);
+  text-shadow: 3px 3px 0 var(--rose), 6px 6px 0 rgba(0, 0, 0, 0.35);
+  line-height: 0.92;
   text-align: center;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   z-index: 1;
 }
-
 .comic-subtitle {
   font-family: 'Bangers', cursive;
   font-size: clamp(1rem, 3vw, 1.6rem);
-  color: #fff;
-  letter-spacing: 0.15em;
+  color: var(--rose);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-align: center;
   z-index: 1;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
-
 .comic-meta {
   display: flex;
-  gap: 24px;
+  gap: 22px;
   list-style: none;
   font-family: 'Comic Neue', 'Arial Black', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #fff;
-  background: #000;
-  padding: 4px 16px;
-  letter-spacing: 0.1em;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 5px 16px;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
   z-index: 1;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 /* ── Text version ── */
 .transcript {
-  border-inline: 6px solid #000;
-  background: #fffdf5;
-  color: #111;
+  max-width: var(--wrap);
+  margin: 18px auto 0;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
   font-family: 'Comic Neue', 'Arial Black', sans-serif;
   font-weight: 700;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.55;
+  overflow: hidden;
 }
-
 .transcript summary {
   cursor: pointer;
-  padding: 10px 16px;
+  padding: 12px 18px;
   font-family: 'Bangers', 'Impact', cursive;
   font-weight: 400;
-  font-size: 1.25rem;
-  letter-spacing: 0.08em;
-  background: #f5e642;
-  border-bottom: 4px solid #000;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--gold);
+  border-bottom: 2.5px solid var(--ink);
 }
+.transcript summary:focus-visible { outline: 3px solid var(--rose); outline-offset: -6px; }
+.transcript ol { max-width: 44rem; margin: 0 auto; padding: 16px 20px 0 2.4rem; }
+.transcript li + li { margin-top: 14px; }
+.transcript > p { max-width: 44rem; margin: 14px auto 0; padding: 0 20px 18px; }
+.transcript-scene { font-weight: 400; }
+.transcript-caption { text-transform: uppercase; }
+.transcript-label { font-weight: 700; color: var(--rose-ink); }
 
-.transcript summary:focus-visible {
-  outline: 3px solid #1a5fb4;
-  outline-offset: -6px;
-}
-
-.transcript ol {
-  max-width: 44rem;
-  margin: 0 auto;
-  padding: 16px 20px 0 2.4rem;
-}
-
-.transcript li + li {
-  margin-top: 14px;
-}
-
-.transcript > p {
-  max-width: 44rem;
-  margin: 14px auto 0;
-  padding: 0 20px 18px;
-}
-
-.transcript-scene {
-  font-weight: 400;
-}
-
-.transcript-caption {
-  text-transform: uppercase;
-}
-
-.transcript-label {
-  font-weight: 700;
-}
-
-/* ── Grid ── */
+/* ── Grid with gutters: each panel is a clearly separated card ── */
 .comic-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: #f5e8c8;
-  border-left: 6px solid #000;
-  border-right: 6px solid #000;
-  border-bottom: 6px solid #000;
-  align-items: stretch;
+  gap: 18px;
+  padding: 22px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
 }
 
-/* ── Panels ──
-   Each panel is a size container. When it is wide enough, captions and bubbles sit on
-   the artwork where the original layout placed them. When it is narrow, they move into
-   normal flow: captions above the drawing, dialogue below it, at a readable size. */
 .panel {
-  border: 4px solid #000;
+  border: 3px solid var(--ink);
+  border-radius: 6px;
   position: relative;
-  background: #fff;
+  background: var(--card);
   overflow: hidden;
   margin: 0;
   container-type: inline-size;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow);
 }
-
 .panel-wide { grid-column: span 2; }
 
-/* Panels in one row stretch to a common height; the artwork fills it (slice) instead of
-   leaving a strip, cropping well under 1% at the edges. */
 .panel-art {
   flex: 1 0 auto;
   aspect-ratio: var(--w) / var(--h);
+  /* Softly muted colour in the site's warm key — hinted, not loud. A painted
+     PNG, when supplied, keeps its full colour (see :has(.panel-img) below). */
+  filter: saturate(0.62) sepia(0.08) brightness(1.03) contrast(0.97);
 }
-
-.panel-art > svg {
+.panel-art > svg,
+.panel-img {
   display: block;
   width: 100%;
   height: 100%;
 }
+.panel-img { object-fit: cover; }
+/* A supplied PNG is already final art, so it keeps its colour. */
+.panel-art:has(.panel-img) { filter: none; }
 
 .panel-caption {
   position: absolute;
@@ -189,9 +192,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--caption-bg);
-  color: var(--caption-fg);
-  border: 2px solid #000;
+  background: var(--card) !important;
+  color: var(--ink) !important;
+  border: 2px solid var(--ink);
   font-family: 'Comic Neue', 'Arial Black', sans-serif;
   font-weight: 700;
   font-size: calc(var(--fs) / var(--w) * 100cqw);
@@ -201,14 +204,9 @@
   z-index: 5;
 }
 
-.panel-dialogue {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 10;
-}
+.panel-dialogue { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
 
-/* ── Speech / Thought bubbles ── */
+/* ── Speech / thought bubbles ── */
 .bubble {
   position: absolute;
   top: var(--top, auto);
@@ -216,303 +214,141 @@
   bottom: var(--bottom, auto);
   left: var(--left, auto);
   width: var(--bubble-width);
-  background: #fff;
-  border: 3px solid #000;
+  background: var(--card);
+  border: 3px solid var(--ink);
   border-radius: 16px;
   padding: clamp(6px, 1.8cqw, 10px) clamp(8px, 2.4cqw, 12px);
   font-family: 'Comic Neue', 'Arial Black', sans-serif;
   font-size: clamp(0.9rem, 2.8cqw, 1.1rem);
   font-weight: 700;
-  color: #000;
+  color: var(--ink);
   line-height: 1.3;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.12);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
   pointer-events: auto;
 }
+.panel-wide .bubble { font-size: clamp(0.9rem, 1.7cqw, 1.1rem); }
 
-.panel-wide .bubble {
-  font-size: clamp(0.9rem, 1.7cqw, 1.1rem);
+.speech::after, .speech::before { content: ''; position: absolute; width: 0; height: 0; }
+.tail-down-left::after, .tail-down-right::after {
+  bottom: -14px; left: 20px;
+  border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 14px solid var(--ink);
 }
-
-.speech::after,
-.speech::before {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
+.tail-down-left::before, .tail-down-right::before {
+  bottom: -10px; left: 22px;
+  border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 12px solid var(--card); z-index: 1;
 }
-
-/* Tail pointing down, near the left or right edge */
-.tail-down-left::after,
-.tail-down-right::after {
-  bottom: -14px;
-  left: 20px;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 14px solid #000;
-}
-
-.tail-down-left::before,
-.tail-down-right::before {
-  bottom: -10px;
-  left: 22px;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 12px solid #fff;
-  z-index: 1;
-}
-
 .tail-down-right::after { left: auto; right: 20px; }
 .tail-down-right::before { left: auto; right: 22px; }
-
-/* Tail pointing left */
 .tail-left::after {
-  top: 62%;
-  left: -14px;
-  transform: translateY(-50%);
-  border-right: 14px solid #000;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
+  top: 62%; left: -14px; transform: translateY(-50%);
+  border-right: 14px solid var(--ink); border-top: 8px solid transparent; border-bottom: 8px solid transparent;
 }
-
 .tail-left::before {
-  top: 62%;
-  left: -10px;
-  transform: translateY(-50%);
-  border-right: 12px solid #fff;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  z-index: 1;
+  top: 62%; left: -10px; transform: translateY(-50%);
+  border-right: 12px solid var(--card); border-top: 6px solid transparent; border-bottom: 6px solid transparent; z-index: 1;
 }
-
-/* Tail pointing up */
 .tail-up::after {
-  top: -14px;
-  left: 20px;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 14px solid #000;
+  top: -14px; left: 20px;
+  border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 14px solid var(--ink);
 }
-
 .tail-up::before {
-  top: -10px;
-  left: 22px;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 12px solid #fff;
-  z-index: 1;
+  top: -10px; left: 22px;
+  border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid var(--card); z-index: 1;
 }
-
-/* An ellipse loses its corners, so the text needs extra room on the sides. */
-.thought {
-  border-radius: 50%;
-  border-style: dashed;
-  text-align: center;
-  padding: 0.7em 1.2em;
-}
+.thought { border-radius: 50%; border-style: dashed; text-align: center; padding: 0.7em 1.2em; }
 
 /* Narrow panels: text leaves the drawing and flows at full size. */
 @container (max-width: 440px) {
   .panel-caption {
-    position: static;
-    width: auto;
-    height: auto;
-    padding: 8px 12px;
-    border: 0;
-    border-bottom: 3px solid #000;
-    font-size: 1.2rem;
-    line-height: 1.3;
-    text-align: center;
-    white-space: normal;
+    position: static; width: auto; height: auto; padding: 8px 12px;
+    border: 0; border-bottom: 2.5px solid var(--ink);
+    font-size: 1.2rem; line-height: 1.3; text-align: center; white-space: normal;
   }
-
-  .panel-caption-after {
-    border-bottom: 0;
-    border-top: 3px solid #000;
-  }
-
+  .panel-caption-after { border-bottom: 0; border-top: 2.5px solid var(--ink); }
   .panel-dialogue {
-    position: static;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 22px 12px 14px;
-    background: #f5e8c8;
-    border-top: 3px solid #000;
+    position: static; display: flex; flex-direction: column; gap: 12px;
+    padding: 20px 12px 14px; background: var(--paper); border-top: 2.5px solid var(--ink);
   }
-
-  .bubble,
-  .panel-wide .bubble {
-    position: relative;
-    inset: auto;
-    width: auto;
-    font-size: 1.05rem;
-    line-height: 1.4;
-    padding: 10px 14px;
+  .bubble, .panel-wide .bubble {
+    position: relative; inset: auto; width: auto; font-size: 1.05rem; line-height: 1.4; padding: 10px 14px;
   }
-
-  /* Every tail points up at the drawing above. */
   .speech::after {
-    inset: auto;
-    top: -14px;
-    left: 20px;
-    right: auto;
-    transform: none;
-    border: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 14px solid #000;
+    inset: auto; top: -14px; left: 20px; right: auto; transform: none; border: 0;
+    border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 14px solid var(--ink);
   }
-
   .speech::before {
-    inset: auto;
-    top: -10px;
-    left: 22px;
-    right: auto;
-    transform: none;
-    border: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-bottom: 12px solid #fff;
+    inset: auto; top: -10px; left: 22px; right: auto; transform: none; border: 0;
+    border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid var(--card);
   }
-
-  .thought {
-    border-radius: 28px;
-  }
+  .thought { border-radius: 28px; }
 }
 
 /* ── Ending banner ── */
 .tbc-panel {
   grid-column: 1 / -1;
-  min-height: 200px;
-  background: #000;
+  min-height: 220px;
+  background: var(--ink);
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 16px 0;
-  border: 4px solid #000;
+  gap: 8px;
+  padding: 26px 18px;
   position: relative;
   overflow: hidden;
 }
-
 .tbc-panel::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(245,230,66,0.12) 1px, transparent 1px);
-  background-size: 12px 12px;
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(226, 80, 63, 0.14) 1px, transparent 1px);
+  background-size: 13px 13px;
 }
-
-.tbc-panel::after {
-  content: '';
-  position: absolute;
-  inset: 14% 7% 10%;
-  background: radial-gradient(circle at center, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.68) 46%, rgba(0,0,0,0) 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.tbc-stars {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.42;
-  z-index: 0;
-}
-
+.tbc-stars { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.3; z-index: 0; }
 .tbc-title {
   font-family: 'Bangers', cursive;
   font-weight: 400;
   font-size: clamp(1.8rem, 5vw, 3.2rem);
-  color: #f5e642;
-  text-shadow:
-    4px 4px 0 #e63946,
-    8px 8px 0 rgba(0,0,0,0.3);
-  letter-spacing: 0.1em;
+  color: var(--paper);
+  text-shadow: 3px 3px 0 var(--rose);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  position: relative;
-  z-index: 1;
-  text-align: center;
+  position: relative; z-index: 1; text-align: center;
 }
-
 .tbc-copy {
   font-family: 'Comic Neue', 'Arial Black', sans-serif;
   font-weight: 700;
   font-size: clamp(0.95rem, 1.4vw, 1rem);
-  color: #ddd;
+  color: #e8e2d6;
   text-align: center;
   max-width: 620px;
   line-height: 1.6;
-  position: relative;
-  z-index: 1;
+  position: relative; z-index: 1;
   padding: 14px 28px 16px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, rgba(4,6,12,0.74), rgba(4,6,12,0.42));
-  box-shadow: inset 0 0 0 1px rgba(245,230,66,0.12);
-  text-shadow: 0 2px 0 rgba(0,0,0,0.85);
 }
+.tbc-copy p + p { margin-top: 1em; }
+.tbc-quote { color: var(--gold); font-style: italic; }
+.tbc-note { color: #a79d8d; font-size: 0.85em; }
+.tbc-mark { width: 120px; position: relative; z-index: 1; margin-top: 6px; }
 
-.tbc-copy p + p {
-  margin-top: 1em;
-}
-
-.tbc-quote {
-  color: #f5e642;
-}
-
-.tbc-note {
-  color: #a9b0c3;
-  font-size: 0.85em;
-}
-
-.tbc-mark {
-  width: 120px;
-  position: relative;
-  z-index: 1;
-  margin-top: 4px;
-}
-
-/* ── Responsive layout ── */
-/* Three columns only where a normal panel is wide enough (over 440px) to keep its text
-   on the artwork; otherwise its text would flow below and leave holes beside the wide
-   panels. Below that, a single centered column keeps the reading order linear. */
-@media (max-width: 1359px) {
-  .comic-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .panel-wide {
-    grid-column: auto;
-  }
-  .panel {
-    width: 100%;
-    max-width: 560px;
-    justify-self: center;
-  }
-  .panel-wide {
-    max-width: 760px;
-  }
-}
-
+.tbc-moon { position: absolute; top: 22px; right: 28px; width: 56px; height: 56px; z-index: 1; filter: drop-shadow(0 0 10px rgba(232, 200, 106, 0.4)); }
+.tbc-cat { position: absolute; bottom: 14px; left: 22px; width: 132px; height: auto; z-index: 1; }
 @media (max-width: 720px) {
-  .comic-cover {
-    padding-inline: 14px;
-  }
+  .tbc-moon { width: 42px; height: 42px; top: 16px; right: 16px; }
+  .tbc-cat { width: 104px; bottom: 10px; left: 12px; }
+}
 
-  .comic-meta {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 12px;
-    padding-inline: 12px;
-    text-align: center;
-  }
-
-  .tbc-panel::after {
-    inset: 10% 4% 7%;
-  }
-
-  .tbc-copy {
-    padding: 12px 18px 14px;
-  }
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .comic-grid { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
+  .panel-wide { grid-column: auto; }
+  .panel { width: 100%; justify-self: center; }
+}
+@media (max-width: 720px) {
+  .comic-cover { padding: 18px 14px 14px; }
+  .comic-grid { padding: 16px; gap: 14px; }
+  .comic-meta { flex-wrap: wrap; justify-content: center; gap: 8px 14px; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tbc-stars { display: none; }
 }

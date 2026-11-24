@@ -1,4 +1,5 @@
 import SiteHeader from '../shared/SiteHeader.jsx'
+import SiteFooter from '../shared/SiteFooter.jsx'
 import ComicPage from './ComicPage.jsx'
 import { episodes } from './episodes/origin.jsx'
 import './ManifestoPage.css'
@@ -23,9 +24,7 @@ export default function ManifestoPage() {
         </nav>
         <ComicPage episode={current} />
       </main>
-      <footer className="site-footer">
-        <a href="/">pagaia.xyz</a> · the manifesto, one chapter at a time
-      </footer>
+      <SiteFooter />
     </>
   )
 }
