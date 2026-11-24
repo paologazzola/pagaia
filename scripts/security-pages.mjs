@@ -126,15 +126,34 @@ function footer() {
     </footer>`
 }
 
-function page({ title, description, body }) {
+const SITE = 'https://pagaia.xyz'
+
+function page({ title, description, body, path = '/' }) {
+  const url = SITE + path
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="${esc(description)}" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${esc(title)}</title>
+    <meta name="description" content="${esc(description)}" />
+    <link rel="canonical" href="${esc(url)}" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#f4efe6" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Pagaia" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="${esc(url)}" />
+    <meta property="og:title" content="${esc(title)}" />
+    <meta property="og:description" content="${esc(description)}" />
+    <meta property="og:image" content="${SITE}/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${esc(title)}" />
+    <meta name="twitter:description" content="${esc(description)}" />
+    <meta name="twitter:image" content="${SITE}/og.png" />
     <script type="module" src="/src/security/main.js"></script>
   </head>
   <body>
@@ -183,7 +202,8 @@ function indexPage(articles) {
           <p class="sec-meta">${badges(a)} <span>Updated <time datetime="${day(a.updated)}">${day(a.updated)}</time></span></p>
         </li>`).join('\n')
   return page({
-    title: 'Security · pagaia.xyz',
+    title: 'Security · Pagaia',
+    path: '/security/',
     description: 'Critical vulnerabilities with affected versions, fixes and dated sources, reviewed before publication.',
     body: `      <h1>Security</h1>
       <p class="sec-intro">Critical vulnerabilities, scored above 8 or exploited in the wild, with affected versions, fixes and dated sources. Each note is reviewed before publication and updated when vendors ship fixes.</p>
@@ -195,8 +215,9 @@ ${filterBar(articles)}
 
 function articlePage(a) {
   return page({
-    title: `${a.title} · Security · pagaia.xyz`,
-    description: plainImpact(a.body_md) || `${a.cve} in ${a.vendor} ${a.product}`,
+    title: `${a.title} · Security · Pagaia`,
+    path: `/security/${a.slug}/`,
+    description: plainImpact(a.body_md) || `${a.cve} in ${who(a.vendor, a.product)}`,
     body: `      <p class="sec-back"><a href="/security/">← All notes</a></p>
       <article class="sec-article">
         <h1>${esc(a.title)}</h1>

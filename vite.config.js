@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync, rmSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
@@ -36,8 +36,35 @@ function latestNotes() {
     .slice(0, 2)
 }
 
+// The security section's URLs, when it is enabled, for the sitemap.
+function securityUrls() {
+  if (!securityOn) return []
+  const dir = join(root, 'content', 'security')
+  const files = existsSync(dir) ? readdirSync(dir).filter(f => f.endsWith('.json')) : []
+  const slugs = files.map(f => f.replace(/\.json$/, '')).filter(s => /^cve-\d{4}-\d{4,}$/.test(s))
+  return ['/security/', ...slugs.map(s => `/security/${s}/`)]
+}
+
+// Writes dist/sitemap.xml after the build, listing only the enabled areas.
+function sitemapPlugin() {
+  return {
+    name: 'pagaia-sitemap',
+    closeBundle() {
+      const base = 'https://pagaia.xyz'
+      const today = new Date().toISOString().slice(0, 10)
+      const urls = ['/', '/manifesto/', ...securityUrls()]
+      const xml =
+        '<?xml version="1.0" encoding="UTF-8"?>\n' +
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+        urls.map(u => `  <url><loc>${base}${u}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
+        '\n</urlset>\n'
+      writeFileSync(join(root, 'dist', 'sitemap.xml'), xml)
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), sitemapPlugin()],
   define: {
     __LATEST_NOTES__: JSON.stringify(latestNotes()),
   },
