@@ -45,3 +45,33 @@ if (list && filters) {
   addEventListener('hashchange', apply)
   apply()
 }
+
+// Copy-link control on note pages. Without JavaScript the address stays
+// visible as selectable text; here it is replaced by a button.
+const copy = document.querySelector('[data-copy]')
+if (copy) {
+  const btn = copy.querySelector('.sec-copy-btn')
+  const status = copy.querySelector('.sec-copy-status')
+  const text = copy.querySelector('.sec-copy-url')
+  const url = copy.dataset.copy
+  let timer
+  const say = msg => {
+    status.textContent = msg
+    clearTimeout(timer)
+    timer = setTimeout(() => { status.textContent = '' }, 2500)
+  }
+  if (btn && status && navigator.clipboard?.writeText) {
+    btn.hidden = false
+    text.hidden = true
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url)
+        say('Copied')
+      } catch {
+        btn.hidden = true
+        text.hidden = false
+        say('Copy failed: select the address instead')
+      }
+    })
+  }
+}

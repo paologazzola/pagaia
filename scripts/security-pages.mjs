@@ -5,10 +5,12 @@
 // The build fails if an article does not match the digest that Paolo
 // approved, or if its HTML contains anything executable.
 import { createHash } from 'node:crypto'
-import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs'
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync, existsSync, statSync, copyFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const SLUG = /^cve-\d{4}-\d{4,}$/
+const MAX_BANNER_BYTES = 2 * 1024 * 1024
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
 const REQUIRED = ['slug', 'cve', 'title', 'revision', 'digest', 'body_md', 'body_html', 'patch_status', 'approved_at']
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
@@ -64,6 +66,31 @@ function plainImpact(md) {
   const m = md.match(/\n## Impact\n\n([\s\S]*?)(\n## |$)/)
   const text = (m ? m[1] : '').replace(/\\([!-/:-@[-`{-~])/g, '$1').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim()
   return text.length > 155 ? text.slice(0, 154) + '…' : text
+}
+
+// Returns a Map of slug -> absolute path for the article banners found in
+// content/security. Only files named exactly <slug>.png are considered; any
+// other file is ignored, as before. A matching file must be a real PNG (the
+// 8-byte signature and an IHDR chunk) no larger than 2 MB, and it must belong
+// to a published article, or the build fails.
+export function readBanners(src, slugs) {
+  const banners = new Map()
+  if (!existsSync(src)) return banners
+  for (const f of readdirSync(src).sort()) {
+    const m = f.match(/^(cve-\d{4}-\d{4,})\.png$/)
+    if (!m || !SLUG.test(m[1])) continue
+    const file = join(src, f)
+    const st = statSync(file)
+    if (!st.isFile()) throw new Error(`${f}: not a regular file`)
+    if (st.size > MAX_BANNER_BYTES) throw new Error(`${f}: larger than ${MAX_BANNER_BYTES} bytes`)
+    const head = readFileSync(file).subarray(0, 16)
+    if (head.length < 16 || !head.subarray(0, 8).equals(PNG_SIGNATURE) || head.subarray(12, 16).toString('latin1') !== 'IHDR') {
+      throw new Error(`${f}: not a valid PNG file`)
+    }
+    if (!slugs.includes(m[1])) throw new Error(`${f}: no article ${m[1]}.json for this banner`)
+    banners.set(m[1], file)
+  }
+  return banners
 }
 
 function check(a, file) {
@@ -132,8 +159,9 @@ function footer() {
 
 const SITE = 'https://pagaia.xyz'
 
-function page({ title, description, body, path = '/' }) {
+function page({ title, description, body, path = '/', image }) {
   const url = SITE + path
+  const img = image || { url: `${SITE}/og.png`, width: 1200, height: 630 }
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -151,13 +179,13 @@ function page({ title, description, body, path = '/' }) {
     <meta property="og:url" content="${esc(url)}" />
     <meta property="og:title" content="${esc(title)}" />
     <meta property="og:description" content="${esc(description)}" />
-    <meta property="og:image" content="${SITE}/og.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content="${esc(img.url)}" />
+    <meta property="og:image:width" content="${img.width}" />
+    <meta property="og:image:height" content="${img.height}" />${img.alt ? `\n    <meta property="og:image:alt" content="${esc(img.alt)}" />` : ''}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(title)}" />
     <meta name="twitter:description" content="${esc(description)}" />
-    <meta name="twitter:image" content="${SITE}/og.png" />
+    <meta name="twitter:image" content="${esc(img.url)}" />${img.alt ? `\n    <meta name="twitter:image:alt" content="${esc(img.alt)}" />` : ''}
     <script type="module" src="/src/security/main.js"></script>
   </head>
   <body>
@@ -237,8 +265,34 @@ ${filterBar(articles)}
   })
 }
 
-function articlePage(a) {
+// shareBar renders plain share links (no third-party scripts or embeds) and a
+// copy-link control. Without JavaScript the copy control shows the address as
+// selectable text; main.js swaps it for a button.
+function shareBar(a) {
+  const url = `${SITE}/security/${a.slug}/`
+  const u = encodeURIComponent(url)
+  const t = encodeURIComponent(a.title)
+  const link = (href, label) =>
+    `<li><a class="sec-share-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${label}<span class="sr-only"> (opens in a new tab)</span></a></li>`
+  return `<section class="sec-share" aria-labelledby="share-h" data-share>
+        <h2 id="share-h" class="sec-share-h">Share this note</h2>
+        <ul class="sec-share-list">
+          ${link(`https://www.linkedin.com/sharing/share-offsite/?url=${u}`, 'LinkedIn')}
+          ${link(`https://x.com/intent/post?text=${t}&url=${u}`, 'X')}
+          ${link(`https://bsky.app/intent/compose?text=${encodeURIComponent(`${a.title} ${url}`)}`, 'Bluesky')}
+          <li><a class="sec-share-link" href="mailto:?subject=${t}&body=${u}">Email</a></li>
+          <li class="sec-copy" data-copy="${esc(url)}">
+            <span class="sec-copy-url">${esc(url)}</span>
+            <button type="button" class="sec-share-link sec-copy-btn" hidden>Copy link</button>
+            <span class="sec-copy-status" role="status" aria-live="polite"></span>
+          </li>
+        </ul>
+      </section>`
+}
+
+function articlePage(a, banner) {
   return page({
+    image: banner ? { url: `${SITE}/security/${a.slug}/banner.png`, width: 1200, height: 627, alt: a.title } : undefined,
     title: `${a.title} · Security · Pagaia`,
     path: `/security/${a.slug}/`,
     description: plainImpact(a.body_md) || (who(a.vendor, a.product) ? `${a.cve} in ${who(a.vendor, a.product)}` : a.cve),
@@ -259,7 +313,8 @@ function articlePage(a) {
 ${a.body_html}
         </div>
         <p class="sec-note">Written from the public records listed under Sources and reviewed before publication. Revision ${esc(a.revision)}, content digest <code>${esc(a.digest.slice(0, 16))}</code>.</p>
-      </article>`,
+      </article>
+      ${shareBar(a)}`,
   })
 }
 
@@ -279,13 +334,24 @@ export function generateSecurityPages(root) {
     return a
   })
   articles.sort((x, y) => (y.updated || '').localeCompare(x.updated || '') || x.slug.localeCompare(y.slug))
+  const banners = readBanners(src, articles.map(a => a.slug))
   const inputs = { security: join(out, 'index.html') }
   writeFileSync(inputs.security, indexPage(articles))
   for (const a of articles) {
     mkdirSync(join(out, a.slug), { recursive: true })
     const p = join(out, a.slug, 'index.html')
-    writeFileSync(p, articlePage(a))
+    writeFileSync(p, articlePage(a, banners.has(a.slug)))
     inputs[`security-${a.slug}`] = p
   }
   return inputs
+}
+
+// Copies the validated banners into the build output as security/<slug>/banner.png.
+export function copyBanners(root, outDir) {
+  const src = join(root, 'content', 'security')
+  const slugs = existsSync(src) ? readdirSync(src).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)) : []
+  for (const [slug, file] of readBanners(src, slugs)) {
+    mkdirSync(join(outDir, 'security', slug), { recursive: true })
+    copyFileSync(file, join(outDir, 'security', slug, 'banner.png'))
+  }
 }

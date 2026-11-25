@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { generateSecurityPages } from './scripts/security-pages.mjs'
+import { generateSecurityPages, copyBanners } from './scripts/security-pages.mjs'
 
 // One HTML entry per section, so every route is a real file that survives a direct refresh
 // on any static host.
@@ -59,6 +59,7 @@ function sitemapPlugin() {
         urls.map(u => `  <url><loc>${base}${u}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
         '\n</urlset>\n'
       writeFileSync(join(root, 'dist', 'sitemap.xml'), xml)
+      if (securityOn) copyBanners(root, join(root, 'dist'))
     },
   }
 }

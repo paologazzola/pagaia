@@ -204,3 +204,42 @@
   overflow-wrap: normal;
 }
 .sec-body { overflow-wrap: anywhere; min-width: 0; }
+
+/* Share bar on note pages. */
+.sec-share { margin-top: 1.4rem; }
+.sec-share .sec-share-h {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.7rem;
+  padding: 0;
+}
+.sec-share-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.sec-share-list > li { margin: 0; }
+.sec-share-link {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.55rem 0.9rem;
+  min-height: 2.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--card);
+  text-decoration: none;
+  cursor: pointer;
+}
+.sec-share a.sec-share-link, .sec-share button.sec-share-link { color: var(--ink); text-decoration: none; }
+.sec-share .sec-share-link:hover { background: var(--ink); color: var(--paper); }
+.sec-share .sec-share-link:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; border-radius: 999px; background: var(--paper); color: var(--ink); }
+.sec-copy { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; min-width: 0; max-width: 100%; }
+.sec-copy-url { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; user-select: all; }
+.sec-copy-status { font-family: var(--mono); font-size: 0.8rem; font-weight: 700; color: var(--green-ink); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.sec-share [hidden] { display: none; }
