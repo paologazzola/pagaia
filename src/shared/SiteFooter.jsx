@@ -27,8 +27,8 @@ export default function SiteFooter() {
             <h2>Security</h2>
             <ul>
               <li><a href="/security/">Latest notes</a></li>
-              <li><span className="foot-muted">How we select</span></li>
-              <li><span className="foot-muted">Sources</span></li>
+              <li><a href="/security/#selection">How we select</a></li>
+              <li><a href="/security/#sources">Sources</a></li>
             </ul>
           </div>
         )}

@@ -175,3 +175,32 @@
 }
 .sec-cat:hover,
 .sec-cat:focus-visible { border-color: var(--ink); color: var(--ink); }
+
+/* Selection and sources sections on the index. */
+.sec-about { margin-top: 2.6rem; padding-top: 0.4rem; border-top: 2px solid var(--line); scroll-margin-top: 1rem; }
+.sec-about h2 { margin-top: 1.4rem; }
+.sec-about ul { padding-left: 1.3rem; }
+.sec-about li { margin-bottom: 0.35rem; }
+
+/* Code in note bodies. */
+.sec-body pre {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 0 0 1rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.sec-body pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.sec-body { overflow-wrap: anywhere; min-width: 0; }

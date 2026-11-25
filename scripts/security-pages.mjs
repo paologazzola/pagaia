@@ -26,6 +26,10 @@ const who = (vendor, product) => {
   return `${v} · ${p}`
 }
 
+// Joins the non-empty parts with a middle dot, so a missing vendor or product
+// never leaves a dangling separator.
+const joinMeta = parts => parts.map(x => String(x ?? '').trim()).filter(Boolean).join(' · ')
+
 // Category keys mirror the editorial vocabulary (editorial/internal/category):
 // programming languages, then one area. The back office assigns them; the site
 // maps only the known keys to labels and ignores anything else, so an
@@ -67,7 +71,7 @@ function check(a, file) {
   if (!SLUG.test(a.slug) || `${a.slug}.json` !== file) throw new Error(`${file}: unexpected slug ${a.slug}`)
   const digest = createHash('sha256').update(`${a.title}\n\n${a.body_md}`).digest('hex')
   if (digest !== a.digest) throw new Error(`${file}: content does not match the approved digest`)
-  if (/<(script|iframe|object|embed|style|form|img|svg)\b|<[^>]*\son\w+\s*=|(href|src)\s*=\s*["']?\s*(javascript|data|vbscript):/i.test(a.body_html)) {
+  if (/<(script|iframe|object|embed|style|form|img|svg)\b|<[^>]*\son\w+\s*=|<[^>]*\s(href|src)\s*=\s*["']?\s*(javascript|data|vbscript):/i.test(a.body_html)) {
     throw new Error(`${file}: body contains executable or embedded content`)
   }
 }
@@ -113,8 +117,8 @@ function footer() {
         </ul></div>
         <div class="foot-col"><h2>Security</h2><ul>
           <li><a href="/security/">Latest notes</a></li>
-          <li><span class="foot-muted">How we select</span></li>
-          <li><span class="foot-muted">Sources</span></li>
+          <li><a href="/security/#selection">How we select</a></li>
+          <li><a href="/security/#sources">Sources</a></li>
         </ul></div>
         <div class="foot-col"><h2>About</h2><ul>
           <li><a href="/manifesto/">What is Pagaia</a></li>
@@ -198,18 +202,38 @@ function filterBar(articles) {
 function indexPage(articles) {
   const items = articles.map(a => `        <li data-cat="${esc(catKeys(a).join(' '))}">
           <a class="sec-title" href="/security/${a.slug}/">${esc(a.title)}</a>
-          <p class="sec-meta">${esc(a.cve)} · ${esc(who(a.vendor, a.product))}${a.score ? ` · CVSS ${esc(a.score)}` : ''}</p>
+          <p class="sec-meta">${esc(joinMeta([a.cve, who(a.vendor, a.product), a.score ? `CVSS ${a.score}` : '']))}</p>
           <p class="sec-meta">${badges(a)} <span>Updated <time datetime="${day(a.updated)}">${day(a.updated)}</time></span></p>
         </li>`).join('\n')
   return page({
     title: 'Security · Pagaia',
     path: '/security/',
-    description: 'Critical vulnerabilities with affected versions, fixes and dated sources, reviewed before publication.',
+    description: 'Critical or actively exploited vulnerabilities with affected versions, fixes and dated sources, reviewed by a person before publication.',
     body: `      <h1>Security</h1>
-      <p class="sec-intro">Critical vulnerabilities, scored above 8 or exploited in the wild, with affected versions, fixes and dated sources. Each note is reviewed before publication and updated when vendors ship fixes.</p>
+      <p class="sec-intro">Critical or actively exploited vulnerabilities, with affected versions, fixes and dated sources. Each note is reviewed by a person before publication and updated when vendors ship fixes. <a href="#selection">How we select</a> and <a href="#sources">where the facts come from</a> are below.</p>
 ${filterBar(articles)}
       <p class="sec-empty" data-empty hidden>No notes in this category.</p>
-      ${articles.length ? `<ul class="sec-list">\n${items}\n      </ul>` : '<p class="sec-empty">No notes published yet.</p>'}`,
+      ${articles.length ? `<ul class="sec-list">\n${items}\n      </ul>` : '<p class="sec-empty">No notes published yet.</p>'}
+      <section class="sec-about" id="selection" aria-labelledby="selection-h">
+        <h2 id="selection-h">How we select</h2>
+        <p>A vulnerability is considered for a note when it meets at least one of these conditions:</p>
+        <ul>
+          <li>it is critical, with a CVSS base score of 9.0 or higher;</li>
+          <li>it is listed in CISA's Known Exploited Vulnerabilities (KEV) catalog, so it is already exploited in the wild;</li>
+          <li>it has a CVSS base score of 8.0 or higher and EPSS from FIRST estimates at least a 30% probability that it will be exploited in the next 30 days.</li>
+        </ul>
+        <p>The scope is programming languages, software, operating systems and networking; industrial equipment, medical products, consumer devices and vehicles are left out. Not every candidate gets a note: the editor chooses which ones to write.</p>
+        <p>Each note is written from public records, reviewed by a person before publication, dated, and revised when the source changes, for example when a vendor ships a fix.</p>
+      </section>
+      <section class="sec-about" id="sources" aria-labelledby="sources-h">
+        <h2 id="sources-h">Sources</h2>
+        <ul>
+          <li>The CVE List published by the CVE Program (CVE JSON 5 records).</li>
+          <li>The CISA Known Exploited Vulnerabilities catalog.</li>
+          <li>EPSS, the Exploit Prediction Scoring System from FIRST.</li>
+          <li>The vendor advisories referenced in each note.</li>
+        </ul>
+      </section>`,
   })
 }
 
@@ -217,7 +241,7 @@ function articlePage(a) {
   return page({
     title: `${a.title} · Security · Pagaia`,
     path: `/security/${a.slug}/`,
-    description: plainImpact(a.body_md) || `${a.cve} in ${who(a.vendor, a.product)}`,
+    description: plainImpact(a.body_md) || (who(a.vendor, a.product) ? `${a.cve} in ${who(a.vendor, a.product)}` : a.cve),
     body: `      <p class="sec-back"><a href="/security/">← All notes</a></p>
       <article class="sec-article">
         <h1>${esc(a.title)}</h1>
@@ -225,7 +249,7 @@ function articlePage(a) {
         ${catKeys(a).length ? `<p class="sec-cats">${catKeys(a).map(k => `<a class="sec-cat" href="/security/#${k}">${esc(CATEGORIES[k])}</a>`).join(' ')}</p>` : ''}
         <dl class="sec-facts">
           <dt>CVE</dt><dd>${esc(a.cve)}</dd>
-          <dt>Product</dt><dd>${esc(who(a.vendor, a.product))}</dd>
+          ${who(a.vendor, a.product) ? `<dt>Product</dt><dd>${esc(who(a.vendor, a.product))}</dd>` : ''}
           ${a.score ? `<dt>CVSS</dt><dd>${esc(a.score)} (v${esc(a.cvss_version)})</dd>` : ''}
           ${a.exploited ? `<dt>Exploited since</dt><dd>${esc(a.exploited_since)} (CISA KEV)</dd>` : ''}
           <dt>Published</dt><dd><time datetime="${day(a.first_published)}">${day(a.first_published)}</time></dd>

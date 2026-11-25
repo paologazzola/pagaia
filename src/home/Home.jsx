@@ -97,7 +97,7 @@ export default function Home() {
                       {n.patch_status === 'patched' && <span className="chip chip-green">Fix available</span>}
                       {n.score != null && <span className="note-score">{n.score}</span>}
                     </div>
-                    <p className="note-cve">{n.cve} · {who(n.vendor, n.product)}</p>
+                    <p className="note-cve">{[n.cve, who(n.vendor, n.product)].filter(Boolean).join(' · ')}</p>
                     <h3 className="note-title">{n.title}</h3>
                     <p className="note-meta">Updated {day(n.updated || n.approved_at)}</p>
                   </a>
