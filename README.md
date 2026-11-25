@@ -6,6 +6,14 @@ Public portal for [pagaia.xyz](https://pagaia.xyz), built with React and Vite. I
 
 The security section is generated at build time by scripts/security-pages.mjs from the JSON files in content/security, one per article. Those files come from the private editorial back office, only for revisions Paolo approved and queued for publication. Each holds the approved Markdown, its rendered HTML and the content digest; the build stops if the content does not match the digest or if the HTML contains anything executable. The generated pages under security/ are plain HTML and are not committed.
 
+## Game
+
+The game section (/game/) holds Pisolini, a daily logic puzzle. Its generator, solver and hint engine live in src/game/pisolini/engine.js, a plain module with no framework or browser dependency. A puzzle id such as `v1-20261125-m` names the generator version and the seed, so a link with `?p=<id>` always reproduces the same puzzle. Progress is kept only in the browser's localStorage. The page is built only when `VITE_GAME` is set (see below). Run the engine tests with:
+
+```bash
+npm test
+```
+
 ## Local development
 
 Use a Node.js version supported by the locked Vite release and npm. Run:
@@ -20,8 +28,9 @@ Open the local URL printed by Vite (usually http://localhost:5173). Changes relo
 ### Enabled areas and full preview
 
 Which areas are public is set at build time (see `src/shared/sections.js`). By default only
-the manifesto is shown and the security section is hidden (work in progress). To preview the
-whole site, security included, with the real content in `content/security/`:
+the manifesto is shown; the security section is hidden and the game is announced as "soon"
+(work in progress). `VITE_SECURITY=true` and `VITE_GAME=true` enable them. To preview the
+whole site, security and game included, with the real content in `content/security/`:
 
 ```bash
 npm run dev:full       # hot-reloading preview with every area enabled

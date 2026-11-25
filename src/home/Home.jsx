@@ -75,12 +75,21 @@ export default function Home() {
                   <span className="card-go card-go-muted">coming soon</span>
                 </div>
               )}
-              <div className="card card-soon" aria-disabled="true">
-                <span className="card-em" aria-hidden="true">🧩</span>
-                <h3>Game <span className="soon-tag">soon</span></h3>
-                <p>Account-free logic puzzles from a seed. Fair, reproducible, quiet.</p>
-                <span className="card-go card-go-muted">coming soon</span>
-              </div>
+              {SECTIONS.game ? (
+                <a className="card" href="/game/">
+                  <span className="card-em" aria-hidden="true">🧩</span>
+                  <h3>Game</h3>
+                  <p>A daily logic puzzle about sleepy cats. No account, no guessing.</p>
+                  <span className="card-go">Play today's puzzle →</span>
+                </a>
+              ) : (
+                <div className="card card-soon" aria-disabled="true">
+                  <span className="card-em" aria-hidden="true">🧩</span>
+                  <h3>Game <span className="soon-tag">soon</span></h3>
+                  <p>Account-free logic puzzles from a seed. Fair, reproducible, quiet.</p>
+                  <span className="card-go card-go-muted">coming soon</span>
+                </div>
+              )}
             </div>
           </div>
         </section>

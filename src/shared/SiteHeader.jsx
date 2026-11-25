@@ -2,11 +2,12 @@ import './site.css'
 import PaddleLogo from './PaddleLogo.jsx'
 import { SECTIONS } from './sections.js'
 
-// Navigation follows the enabled areas. A hidden section leaves no link.
+// Navigation follows the enabled areas. A hidden section leaves no link; the
+// game is announced as "soon" until it is enabled.
 const NAV = [
   SECTIONS.manifesto && { href: '/manifesto/', label: 'Manifesto', id: 'manifesto' },
   SECTIONS.security && { href: '/security/', label: 'Security', id: 'security' },
-  { label: 'Game', id: 'game', soon: true },
+  SECTIONS.game ? { href: '/game/', label: 'Game', id: 'game' } : { label: 'Game', id: 'game', soon: true },
 ].filter(Boolean)
 
 export default function SiteHeader({ current }) {

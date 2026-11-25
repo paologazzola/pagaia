@@ -13,7 +13,11 @@ const root = fileURLToPath(new URL('.', import.meta.url))
 // Areas are toggled at build time (see src/shared/sections.js). The security
 // section is built only when VITE_SECURITY is set; otherwise its pages are not
 // generated and any earlier output is removed, so production can hide it.
-const securityOn = /^(true|1)$/i.test(process.env.VITE_SECURITY || '')
+const flag = name => /^(true|1)$/i.test(process.env[name] || '')
+const securityOn = flag('VITE_SECURITY')
+// The game (/game/) is built only when VITE_GAME is set. Otherwise its page is
+// not an entry, so none of its code reaches dist/.
+const gameOn = flag('VITE_GAME')
 const security = securityOn
   ? generateSecurityPages(root)
   : (rmSync(fileURLToPath(new URL('./security', import.meta.url)), { recursive: true, force: true }), {})
@@ -52,7 +56,7 @@ function sitemapPlugin() {
     closeBundle() {
       const base = 'https://pagaia.xyz'
       const today = new Date().toISOString().slice(0, 10)
-      const urls = ['/', '/manifesto/', ...securityUrls()]
+      const urls = ['/', '/manifesto/', ...(gameOn ? ['/game/'] : []), ...securityUrls()]
       const xml =
         '<?xml version="1.0" encoding="UTF-8"?>\n' +
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
@@ -74,6 +78,7 @@ export default defineConfig({
       input: {
         home: page('./index.html'),
         manifesto: page('./manifesto/index.html'),
+        ...(gameOn ? { game: page('./game/index.html') } : {}),
         ...security,
       },
     },

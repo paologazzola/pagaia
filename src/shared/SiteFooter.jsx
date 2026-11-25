@@ -19,7 +19,7 @@ export default function SiteFooter() {
           <ul>
             <li><a href="/manifesto/">Manifesto</a></li>
             <li>{SECTIONS.security ? <a href="/security/">Security</a> : <span className="foot-muted">Security · soon</span>}</li>
-            <li><span className="foot-muted">Game · soon</span></li>
+            <li>{SECTIONS.game ? <a href="/game/">Game</a> : <span className="foot-muted">Game · soon</span>}</li>
           </ul>
         </div>
         {SECTIONS.security && (
